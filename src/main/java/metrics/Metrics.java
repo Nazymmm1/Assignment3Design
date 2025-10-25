@@ -30,6 +30,10 @@ public class Metrics {
         return totalCost;
     }
 
+    public void reset(){
+        totalCost=operationsCount=0;
+        startTime=endTime=0;
+    }
     public int getOperationsCount() {
         return operationsCount;
     }

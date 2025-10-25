@@ -1,30 +1,63 @@
 package org.example;
 
+import algorithms.KruskalAlgorithm;
+import algorithms.PrimAlgorithm;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import graph.Edge;
 import graph.Graph;
-import graph.Vertex;
+import metrics.Metrics;
+import model.*;
+import model.GraphResult;
+import model.GraphWrapper;
+import util.JsonReaderUtil;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Vertex a = new Vertex("A");
-        Vertex b = new Vertex("B");
-        Vertex c = new Vertex("C");
 
-        List<Vertex> vertices = new ArrayList<>();
-        vertices.add(a);
-        vertices.add(b);
-        vertices.add(c);
+        String fileName = "inputt.json";
 
-        List<Edge> edges = new ArrayList<>();
-        edges.add(new Edge(a, b, 4));
-        edges.add(new Edge(a, c, 3));
-        edges.add(new Edge(b, c, 2));
+        GraphWrapper inputData = JsonReaderUtil.readFromJson(fileName);
 
-        Graph graph = new Graph(1, vertices, edges);
+        List<GraphResult> graphResults = new ArrayList<>();
 
-        System.out.println("Graph created with " + graph.getVertices().size() + " vertices and " + graph.getEdges().size() + " edges.");
+        for (GraphData graphData : inputData.getGraphs()) {
+            Graph graph = new Graph(graphData.getNodes(), graphData.getEdges());
+
+            Metrics primMetrics = new Metrics();
+            PrimAlgorithm primAlgorithm = new PrimAlgorithm();
+            List<Edge> primMST = primAlgorithm.run(graph, primMetrics);
+
+            GraphResult.AlgorithmResult primResult = new GraphResult.AlgorithmResult(primMST,
+                    primMetrics.getTotalCost()
+                    , primMetrics.getOperationsCount(),
+                    primMetrics.getExecutionTimeMs());
+
+            Metrics kruskalsMetrics = new Metrics();
+            KruskalAlgorithm kruskalAlgorithm = new KruskalAlgorithm();
+            List<Edge> kruskalMST = kruskalAlgorithm.run(graph, kruskalsMetrics);
+
+            GraphResult.AlgorithmResult kruskalResult = new GraphResult.AlgorithmResult(kruskalMST, kruskalsMetrics.getTotalCost(),
+                    kruskalsMetrics.getOperationsCount(),
+                    kruskalsMetrics.getExecutionTimeMs());
+            graphResults.add(new GraphResult(graphData.getId(), graphData.getNodes().size(),
+                    graphData.getEdges().size(), primResult, kruskalResult));
+
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter("output.json")) {
+            java.util.Map<String, Object> output = new java.util.HashMap<>();
+            output.put("results", graphResults);
+
+            writer.write(gson.toJson(output));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
