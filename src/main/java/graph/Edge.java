@@ -1,29 +1,21 @@
 package graph;
 
-public class Edge implements Comparable<Edge>{
-    private Vertex source;
-    private Vertex destination;
+public class Edge {
+    private String from;
+    private String to;
     private int weight;
 
-    public Edge(Vertex source,Vertex destination,int weight){
-        this.source=source;
-        this.destination=destination;
-        this.weight=weight;
+    public Edge(String from, String to, int weight) {
+        this.from = from;
+        this.to = to;
+        this.weight = weight;
     }
+    public String getFrom() { return from; }
+    public String getTo() { return to; }
+    public int getWeight() { return weight; }
 
-    public int getWeight() {
-        return weight;
-    }
-
-    public Vertex getSource() {
-        return source;
-    }
-
-    public Vertex getDestination() {
-        return destination;
-    }
     @Override
-    public int compareTo(Edge other){
-        return Integer.compare(this.weight,other.weight);
+    public String toString() {
+        return from+" - "+to+" (" + weight + ")";
     }
 }
