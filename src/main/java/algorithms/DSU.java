@@ -40,8 +40,9 @@ public class DSU {
         else if (rank.get(rootX)<rank.get(rootY)){
             parent.put(rootX,rootY);
         }
-        else{
-            parent.put(rootX,rootY);
+        else {
+            parent.put(rootY, rootX);
+            rank.put(rootX, rank.get(rootX) + 1);
         }
     }
 }

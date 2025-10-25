@@ -11,7 +11,7 @@ public class PrimAlgorithm {
         metrics.reset();
         metrics.start();
 
-        List<Edge> mst= graph.getEdges();
+        List<Edge> mst= new ArrayList<>();
         Set<String> visited= new HashSet<>();
         PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Edge::getWeight));
 
@@ -41,6 +41,9 @@ public class PrimAlgorithm {
         }
 
         metrics.stop();
+        if (mst.size() != graph.getVertices().size() - 1) {
+            return null;
+        }
         return mst;
 
     }

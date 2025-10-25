@@ -32,6 +32,10 @@ public class KruskalAlgorithm {
             }
         }
         metrics.stop();
+        metrics.stop();
+        if (mst.size() != graph.getVertices().size() - 1) {
+            return null;
+        }
         return mst;
     }
 }
