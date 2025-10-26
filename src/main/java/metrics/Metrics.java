@@ -34,6 +34,16 @@ public class Metrics {
         totalCost=operationsCount=0;
         startTime=endTime=0;
     }
+    public double measureExecutionTime(Runnable algorithm, int repetitions) {
+        long totalTime = 0;
+        for (int i = 0; i < repetitions; i++) {
+            start();
+            algorithm.run();
+            stop();
+            totalTime += (endTime - startTime);
+        }
+        return totalTime / 1_000_000.0 / repetitions;
+    }
     public int getOperationsCount() {
         return operationsCount;
     }

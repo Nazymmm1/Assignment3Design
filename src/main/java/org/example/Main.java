@@ -36,7 +36,7 @@ public class Main {
             GraphResult.AlgorithmResult primResult = new GraphResult.AlgorithmResult(primMST,
                     primMetrics.getTotalCost()
                     , primMetrics.getOperationsCount(),
-                    primMetrics.getExecutionTimeMs());
+                    primMetrics.measureExecutionTime(() -> PrimAlgorithm.run(graph, primMetrics), 1000));
 
             Metrics kruskalsMetrics = new Metrics();
             KruskalAlgorithm kruskalAlgorithm = new KruskalAlgorithm();
@@ -44,7 +44,8 @@ public class Main {
 
             GraphResult.AlgorithmResult kruskalResult = new GraphResult.AlgorithmResult(kruskalMST, kruskalsMetrics.getTotalCost(),
                     kruskalsMetrics.getOperationsCount(),
-                    kruskalsMetrics.getExecutionTimeMs());
+                    kruskalsMetrics.measureExecutionTime(() -> KruskalAlgorithm.run(graph, kruskalsMetrics), 1000));
+
             graphResults.add(new GraphResult(graphData.getId(), graphData.getNodes().size(),
                     graphData.getEdges().size(), primResult, kruskalResult));
 
