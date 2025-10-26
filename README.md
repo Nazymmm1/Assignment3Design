@@ -72,4 +72,14 @@ From an implementation perspective, writing Prim's algorithm was much easier for
 
 Compared to that, Kruskal's algorithm was much trickier, requiring me to create a separate DSU class for the algorithm to work smoothly.
 
+### Bonus task
+
+I have started the assignment from creating the graph and edge classes(their demo is in feature/graph) At first I also had a vertex class then I decided to have them as just String.
+
+In GraphDemo I demonstrate that my graph can perfectly work even without input.json.
+
+*Proof from terminal:*
+
+![Execution Time Comparison](./images/proof.png)
+
 ---
